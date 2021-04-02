@@ -30,7 +30,7 @@ namespace WorkoutAPI.Controllers
 
         protected async Task<List<TDTO>> Get<TEntity, TDTO>(PaginationDTO paginationDTO, IQueryable<TEntity> queryable) where TEntity : class
         {
-            await HttpContext.InsertPaginationParams(queryable, paginationDTO.QuantityRegistersPerPage);
+            await HttpContext.InsertPaginationParams(queryable, paginationDTO.RowsPerPage);
             var entities = await queryable.Paginate(paginationDTO).ToListAsync();
             return mapper.Map<List<TDTO>>(entities);
         }

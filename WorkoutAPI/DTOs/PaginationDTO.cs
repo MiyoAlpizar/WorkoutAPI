@@ -8,16 +8,16 @@ namespace WorkoutAPI.DTOs
     public class PaginationDTO
     {
         public int Page { get; set; } = 1;
-        public int QuantityPerPage { get; set; } = 10;
+        private int _RowsPerPage { get; set; } = 10;
 
-        private readonly int MaxPageCantityPerPage = 50;
+        private readonly int MaxRowsPerPage = 50;
 
-        public int QuantityRegistersPerPage
+        public int RowsPerPage
         {
-            get => QuantityPerPage;
+            get => _RowsPerPage;
             set
             {
-                QuantityPerPage = (value > MaxPageCantityPerPage ? QuantityPerPage : value);
+                _RowsPerPage = (value > MaxRowsPerPage ? _RowsPerPage : value);
             }
         }
     }

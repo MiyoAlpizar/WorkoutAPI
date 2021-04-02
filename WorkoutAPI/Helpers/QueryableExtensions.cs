@@ -11,8 +11,8 @@ namespace WorkoutAPI
         public static IQueryable<T> Paginate<T>(this IQueryable<T> queryable, PaginationDTO pagination)
         {
             return queryable
-                .Skip((pagination.Page - 1) * pagination.QuantityRegistersPerPage)
-                .Take(pagination.QuantityRegistersPerPage);
+                .Skip((pagination.Page - 1) * pagination.RowsPerPage)
+                .Take(pagination.RowsPerPage);
 
         }
     }
