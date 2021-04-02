@@ -13,7 +13,6 @@ namespace WorkoutAPI.Helpers
         public AutoMapperProfile()
         {
            
-
             CreateMap<Workout, WorkoutDTO>()
                 .ForMember(x => x.WorkoutDescription, x => x.MapFrom(GetWorkoutDesc))
                 .ForMember(x => x.MainMuscle, x => x.MapFrom(x => x.MainMuscle.GetDescription()))

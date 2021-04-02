@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -46,5 +47,22 @@ namespace WorkoutAPI.Controllers
             return await Post<SerieCreateDTO, Serie, SerieDTO>(serie, "GetSerie");
         }
 
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(int id, [FromBody] SerieCreateDTO serie)
+        {
+            return await Put<SerieCreateDTO, Serie>(id, serie);
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> Patch(int id,[FromBody] JsonPatchDocument<SerieCreateDTO> patchDocument)
+        {
+            return await Patch<Serie, SerieCreateDTO>(id, patchDocument);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            return await Delete<Serie>(id);
+        }
     }
 }
