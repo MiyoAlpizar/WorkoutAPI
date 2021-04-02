@@ -27,6 +27,8 @@ namespace WorkoutAPI.Helpers
 
             CreateMap<SerieCreateDTO, Serie>()
                 .ForMember(x => x.Workouts, o => o.MapFrom(MapSeriesWorkouts));
+
+
            
         }
 

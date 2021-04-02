@@ -38,7 +38,13 @@ namespace WorkoutAPI.Controllers
         [HttpGet("{id}", Name ="GetSerie")]
         public async Task<ActionResult<SerieDTO>> Get(int id)
         {
-            return await Get<Serie, SerieDTO>(id);
+            var queryable = context.Series.AsQueryable();
+            queryable = queryable
+                .Include(x => x.Workouts)
+                .ThenInclude(x => x.Workout)
+                .ThenInclude(x => x.Images);
+
+            return await Get<Serie, SerieDTO>(id, queryable);
         }
 
         [HttpPost]
