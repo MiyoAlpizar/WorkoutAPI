@@ -34,7 +34,10 @@ namespace WorkoutAPI.Helpers
            
             CreateMap<Rutine, RutineDTO>()
                 .ForMember(x => x.Series, x => x.MapFrom(MapRutineSeries));
-           
+
+            CreateMap<ApplicationUser, UserInfo>().ReverseMap();
+            CreateMap<ApplicationUser, UserInfoDTO>();
+
         }
 
         private List<SerieWorkout> MapSeriesWorkouts(SerieCreateDTO serieCreate, Serie serie)
