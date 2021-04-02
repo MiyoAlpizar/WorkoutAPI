@@ -92,7 +92,7 @@ namespace WorkoutAPI.Controllers
             return NoContent();
         }
 
-        protected async Task<ActionResult> PutAndValidate<TCreation, TEntity>(int id, TCreation creationDTO) where TEntity : class, IId, IOwner
+        protected async Task<ActionResult> PutAndValidateOwner<TCreation, TEntity>(int id, TCreation creationDTO) where TEntity : class, IId, IOwner
         {
             var dbEntity = await context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
             if (dbEntity == null)
@@ -138,7 +138,7 @@ namespace WorkoutAPI.Controllers
             return NoContent();
         }
 
-        protected async Task<ActionResult> PatchAndValidate<TEntity, TDTO>(int id, JsonPatchDocument<TDTO> patchDocument)
+        protected async Task<ActionResult> PatchAndValidateOwner<TEntity, TDTO>(int id, JsonPatchDocument<TDTO> patchDocument)
             where TDTO : class
             where TEntity : class, IId, IOwner
         {
@@ -184,7 +184,7 @@ namespace WorkoutAPI.Controllers
             return NoContent();
         }
 
-        protected async Task<ActionResult> DeleteAndValidate<TEntity>(int id) where TEntity : class, IId, IOwner ,new()
+        protected async Task<ActionResult> DeleteAndValidateOwner<TEntity>(int id) where TEntity : class, IId, IOwner ,new()
         {
             var dbEntity = await context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
             if (dbEntity == null)
