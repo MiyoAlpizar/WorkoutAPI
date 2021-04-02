@@ -92,6 +92,25 @@ namespace WorkoutAPI.Controllers
             return NoContent();
         }
 
+        protected async Task<ActionResult> PutAndValidate<TCreation, TEntity>(int id, TCreation creationDTO) where TEntity : class, IId, IOwner
+        {
+            var dbEntity = await context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
+            if (dbEntity == null)
+            {
+                return NotFound();
+            }
+            var userId = HttpContext.GetUserId();
+            if (userId != dbEntity.UserId)
+            {
+                return BadRequest("User has no permissions to update data");
+            }
+            var entidad = mapper.Map<TEntity>(creationDTO);
+            entidad.Id = id;
+            context.Entry(entidad).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
+
         protected async Task<ActionResult> Patch<TEntity, TDTO>(int id, JsonPatchDocument<TDTO> patchDocument)
             where TDTO : class
             where TEntity : class, IId
@@ -119,6 +138,40 @@ namespace WorkoutAPI.Controllers
             return NoContent();
         }
 
+        protected async Task<ActionResult> PatchAndValidate<TEntity, TDTO>(int id, JsonPatchDocument<TDTO> patchDocument)
+            where TDTO : class
+            where TEntity : class, IId, IOwner
+        {
+            if (patchDocument == null)
+            {
+                return BadRequest();
+            }
+
+            var entity = await context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            var userId = HttpContext.GetUserId();
+            
+            if (userId != entity.UserId)
+            {
+                return BadRequest("User has no permissions to update data");
+            }
+
+            var entityDTO = mapper.Map<TDTO>(entity);
+            patchDocument.ApplyTo(entityDTO);
+            var isValid = TryValidateModel(entityDTO);
+            if (!isValid)
+            {
+                return BadRequest(ModelState);
+            }
+            mapper.Map(entityDTO, entity);
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
+
         protected async Task<ActionResult> Delete<TEntity>(int id) where TEntity : class, IId, new()
         {
             var exists = await context.Set<TEntity>().AnyAsync(x => x.Id == id);
@@ -126,6 +179,24 @@ namespace WorkoutAPI.Controllers
             {
                 return NotFound();
             }
+            context.Remove(new TEntity { Id = id });
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        protected async Task<ActionResult> DeleteAndValidate<TEntity>(int id) where TEntity : class, IId, IOwner ,new()
+        {
+            var dbEntity = await context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
+            if (dbEntity == null)
+            {
+                return NotFound();
+            }
+            var userId = HttpContext.GetUserId();
+            if (userId != dbEntity.UserId)
+            {
+                return BadRequest("User has no permissions to delete data");
+            }
+
             context.Remove(new TEntity { Id = id });
             await context.SaveChangesAsync();
             return NoContent();

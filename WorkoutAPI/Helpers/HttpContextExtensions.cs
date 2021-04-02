@@ -20,5 +20,14 @@ namespace WorkoutAPI
         {
             return httpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
         }
+
+        public static bool IsUserOwner(this HttpContext httpContext, string id)
+        {
+            var user = httpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            if (user == null) return false;
+            else
+                return user == id;
+        }
+
     }
 }

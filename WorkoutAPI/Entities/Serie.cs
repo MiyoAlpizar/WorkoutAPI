@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WorkoutAPI.Entities
 {
-    public class Serie : IId
+    public class Serie : IId, IOwner
     {
         public int Id { get; set; }
 
@@ -23,5 +23,9 @@ namespace WorkoutAPI.Entities
         public List<SerieWorkout> Workouts { get; set; }
 
         public List<RutineSerie> Series { get; set; }
+
+        public bool Public { get; set; } = true;
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }

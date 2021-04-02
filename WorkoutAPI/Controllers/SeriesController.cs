@@ -73,5 +73,7 @@ namespace WorkoutAPI.Controllers
         {
             return await Delete<Serie>(id);
         }
+
+
     }
 }

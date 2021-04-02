@@ -47,7 +47,7 @@ namespace WorkoutAPI.Controllers
         [HttpPost("create")]
         public async Task<ActionResult<UserToken>> CreateUser([FromBody] UserInfo userInfo)
         {
-            var user = new ApplicationUser { UserName = userInfo.Email, Email = userInfo.Email };
+            var user = new ApplicationUser { UserName = userInfo.Email, Email = userInfo.Email, };
             var result = await userManager.CreateAsync(user, userInfo.Password);
             if (result.Succeeded)
             {

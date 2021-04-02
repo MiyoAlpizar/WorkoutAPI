@@ -42,7 +42,7 @@ namespace WorkoutAPI.Entities
         calves
     }
 
-    public class Workout : IId
+    public class Workout : IId, IOwner
     {
         public int Id { get; set; }
         [Required]
@@ -63,6 +63,9 @@ namespace WorkoutAPI.Entities
         public Muscle SecondMuscle { get; set; }
         public List<WorkoutImages> Images { get; set; }
         public List<SerieWorkout> Workouts { get; set; }
+        public bool Public { get; set; } = true;
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
 
     }
 }

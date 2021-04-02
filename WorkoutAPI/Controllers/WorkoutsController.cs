@@ -71,19 +71,21 @@ namespace WorkoutAPI.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] WorkoutUpdateDTO workoutCreate)
         {
-            return await Put<WorkoutUpdateDTO, Workout>(id, workoutCreate);
+            return await PutAndValidate<WorkoutUpdateDTO, Workout>(id, workoutCreate);
         }
 
         [HttpPatch("{id}")]
         public async Task<ActionResult> Patch(int id, [FromBody] JsonPatchDocument<WorkoutUpdateDTO> patchDocument)
         {
-            return await Patch<Workout, WorkoutUpdateDTO>(id, patchDocument);
+            return await PatchAndValidate<Workout, WorkoutUpdateDTO>(id, patchDocument);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            return await Delete<Workout>(id);
+            return await DeleteAndValidate<Workout>(id);
         }
+
+       
     }
 }
