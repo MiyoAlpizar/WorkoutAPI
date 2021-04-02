@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 
 namespace WorkoutAPI.Entities
 {
-    public class UrlImage
+    public class WorkoutImages
     {
         public int Id { get; set; }
         public string Url { get; set; }
+        public int WorkoutId { get; set; }
+        public Workout Workout { get; set; }
     }
 }

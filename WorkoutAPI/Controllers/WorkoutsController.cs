@@ -57,7 +57,7 @@ namespace WorkoutAPI.Controllers
                 var content = memoryStream.ToArray();
                 var extension = Path.GetExtension(workoutCreate.ImageFile.FileName);
                 var url = await storage.SaveFile(content, extension, CONTAINER, workoutCreate.ImageFile.ContentType);
-                entity.Images = new List<UrlImage> { new UrlImage { Url = url } };
+                entity.Images = new List<WorkoutImages> { new WorkoutImages { Url = url } };
             }
             context.Add(entity);
             await context.SaveChangesAsync();

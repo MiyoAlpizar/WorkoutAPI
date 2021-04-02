@@ -13,7 +13,7 @@ namespace WorkoutAPI
         public DbSet<Workout> Workouts { get; set; }
         public DbSet<Serie> Series { get; set; }
         public DbSet<Rutine> Rutines { get; set; }
-        public DbSet<UrlImage> Images { get; set; }
+        public DbSet<WorkoutImages> Images { get; set; }
         public DbSet<RutineSerie> RutineSeries { get; set; }
         public DbSet<SerieWorkout> SerieWorkouts { get; set; }
         
@@ -29,9 +29,6 @@ namespace WorkoutAPI
 
             builder.Entity<SerieWorkout>()
                 .HasKey(x => new { x.SerieId, x.WorkoutId });
-
-            builder.Entity<WorkoutImages>()
-                .HasKey(x => new { x.WorkoutId, x.ImageId });
 
             base.OnModelCreating(builder);
         }

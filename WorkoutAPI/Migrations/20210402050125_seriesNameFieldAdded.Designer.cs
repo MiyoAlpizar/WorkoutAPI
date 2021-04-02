@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkoutAPI;
 
 namespace WorkoutAPI.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210402050125_seriesNameFieldAdded")]
+    partial class seriesNameFieldAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -287,6 +289,26 @@ namespace WorkoutAPI.Migrations
                     b.ToTable("SerieWorkouts");
                 });
 
+            modelBuilder.Entity("WorkoutAPI.Entities.UrlImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("WorkoutId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorkoutId");
+
+                    b.ToTable("Images");
+                });
+
             modelBuilder.Entity("WorkoutAPI.Entities.Workout", b =>
                 {
                     b.Property<int>("Id")
@@ -327,22 +349,17 @@ namespace WorkoutAPI.Migrations
 
             modelBuilder.Entity("WorkoutAPI.Entities.WorkoutImages", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Url")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("WorkoutId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<int>("ImageId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("WorkoutId");
+                    b.HasKey("WorkoutId", "ImageId");
 
-                    b.ToTable("Images");
+                    b.HasIndex("ImageId");
+
+                    b.ToTable("WorkoutImages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -434,13 +451,28 @@ namespace WorkoutAPI.Migrations
                     b.Navigation("Workout");
                 });
 
+            modelBuilder.Entity("WorkoutAPI.Entities.UrlImage", b =>
+                {
+                    b.HasOne("WorkoutAPI.Entities.Workout", null)
+                        .WithMany("Images")
+                        .HasForeignKey("WorkoutId");
+                });
+
             modelBuilder.Entity("WorkoutAPI.Entities.WorkoutImages", b =>
                 {
+                    b.HasOne("WorkoutAPI.Entities.UrlImage", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("WorkoutAPI.Entities.Workout", "Workout")
-                        .WithMany("Images")
+                        .WithMany()
                         .HasForeignKey("WorkoutId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Image");
 
                     b.Navigation("Workout");
                 });

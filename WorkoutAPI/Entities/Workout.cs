@@ -61,7 +61,7 @@ namespace WorkoutAPI.Entities
         public Muscle MainMuscle { get; set; }
         [Range(0, 10)]
         public Muscle SecondMuscle { get; set; }
-        public List<UrlImage> Images { get; set; }
+        public List<WorkoutImages> Images { get; set; }
         public List<SerieWorkout> Workouts { get; set; }
 
     }

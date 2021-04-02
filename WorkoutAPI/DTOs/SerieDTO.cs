@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using WorkoutAPI.Entities;
 
-namespace WorkoutAPI.Entities
+namespace WorkoutAPI.DTOs
 {
-    public class Serie : IId
+    public class SerieDTO
     {
         public int Id { get; set; }
 
@@ -17,11 +18,10 @@ namespace WorkoutAPI.Entities
         [StringLength(500)]
         public string Comments { get; set; }
 
-        [Range(0,180)]
+        [Range(0, 180)]
         public int RestInSeconds { get; set; }
 
-        public List<SerieWorkout> Workouts { get; set; }
+        public List<Workout> Workouts { get; set; }
 
-        public List<RutineSerie> Series { get; set; }
     }
 }
