@@ -16,8 +16,7 @@ namespace WorkoutAPI
         public DbSet<UrlImage> Images { get; set; }
         public DbSet<RutineSerie> RutineSeries { get; set; }
         public DbSet<SerieWorkout> SerieWorkouts { get; set; }
-        public DbSet<WorkoutImages> WorkoutImages { get; set; }
-
+        
         public ApplicationDBContext(DbContextOptions options) : base(options)
         {
 
