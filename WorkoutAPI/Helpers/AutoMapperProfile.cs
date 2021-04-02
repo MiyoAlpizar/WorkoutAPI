@@ -23,12 +23,17 @@ namespace WorkoutAPI.Helpers
             CreateMap<WorkoutCreateDTO, Workout>().ForMember(x => x.Images, o => o.Ignore());
             CreateMap<WorkoutUpdateDTO, Workout>().ReverseMap();
 
-            CreateMap<Serie, SerieDTO>().ForMember(x => x.Workouts, x => x.MapFrom(MapSeriesWorkouts));
+            CreateMap<Serie, SerieDTO>()
+                .ForMember(x => x.Workouts, x => x.MapFrom(MapSeriesWorkouts));
 
             CreateMap<SerieCreateDTO, Serie>()
                 .ForMember(x => x.Workouts, o => o.MapFrom(MapSeriesWorkouts));
 
-
+            CreateMap<RutineCreateDTO, Rutine>()
+                .ForMember(x => x.Series, x => x.MapFrom(MapRutineSeries));
+           
+            CreateMap<Rutine, RutineDTO>()
+                .ForMember(x => x.Series, x => x.MapFrom(MapRutineSeries));
            
         }
 
@@ -79,6 +84,28 @@ namespace WorkoutAPI.Helpers
                 }
             }
             return images;
+        }
+
+        private List<RutineSerie> MapRutineSeries(RutineCreateDTO createDTO, Rutine rutine)
+        {
+            var results = new List<RutineSerie>();
+            if (createDTO.SeriesIds == null) return results;
+            foreach (var item in createDTO.SeriesIds)
+            {
+                results.Add(new RutineSerie { SerieId = item });
+            }
+            return results;
+        }
+
+        private List<SerieDTO> MapRutineSeries(Rutine rutine, RutineDTO rutineDTO, List<SerieDTO> serieDTOs, ResolutionContext context)
+        {
+            var results = new List<SerieDTO>();
+            if (rutine.Series == null) return results;
+            foreach (var item in rutine.Series)
+            {
+                results.Add(context.Mapper.Map<SerieDTO>(item.Serie));
+            }
+            return results;
         }
     }
 }
