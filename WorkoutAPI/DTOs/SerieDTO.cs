@@ -21,7 +21,23 @@ namespace WorkoutAPI.DTOs
         [Range(0, 180)]
         public int RestInSeconds { get; set; }
 
-        public List<Workout> Workouts { get; set; }
+        public List<WorkoutDTO> Workouts { get; set; }
+
+    }
+
+    public class SerieCreateDTO
+    {
+        [Required]
+        [StringLength(120)]
+        public string Name { get; set; }
+
+        [StringLength(500)]
+        public string Comments { get; set; }
+
+        [Range(0, 180)]
+        public int RestInSeconds { get; set; }
+
+        public List<int> WorkoutsIds { get; set; }
 
     }
 }

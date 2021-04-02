@@ -12,6 +12,8 @@ namespace WorkoutAPI.Helpers
     {
         public AutoMapperProfile()
         {
+           
+
             CreateMap<Workout, WorkoutDTO>()
                 .ForMember(x => x.WorkoutDescription, x => x.MapFrom(GetWorkoutDesc))
                 .ForMember(x => x.MainMuscle, x => x.MapFrom(x => x.MainMuscle.GetDescription()))
@@ -22,6 +24,34 @@ namespace WorkoutAPI.Helpers
             CreateMap<WorkoutCreateDTO, Workout>().ForMember(x => x.Images, o => o.Ignore());
             CreateMap<WorkoutUpdateDTO, Workout>().ReverseMap();
 
+            CreateMap<Serie, SerieDTO>().ForMember(x => x.Workouts, x => x.MapFrom(MapSeriesWorkouts));
+
+            CreateMap<SerieCreateDTO, Serie>()
+                .ForMember(x => x.Workouts, o => o.MapFrom(MapSeriesWorkouts));
+           
+        }
+
+        private List<SerieWorkout> MapSeriesWorkouts(SerieCreateDTO serieCreate, Serie serie)
+        {
+            var results = new List<SerieWorkout>();
+            if (serieCreate.WorkoutsIds == null) return results;
+            foreach (var item in serieCreate.WorkoutsIds)
+            {
+                results.Add(new SerieWorkout { WorkoutId = item });
+            }
+            return results;
+        }
+
+        private List<WorkoutDTO> MapSeriesWorkouts(Serie serie, SerieDTO serieDTO, List<WorkoutDTO> workouts , ResolutionContext context)
+        {
+            var results = new List<WorkoutDTO>();
+            if (serie.Workouts == null) return results;
+            
+            foreach (var item in serie.Workouts)
+            {
+                results.Add(context.Mapper.Map<WorkoutDTO>(item.Workout));
+            }
+            return results;
         }
 
         private string GetWorkoutDesc(Workout workout, WorkoutDTO dTO)
